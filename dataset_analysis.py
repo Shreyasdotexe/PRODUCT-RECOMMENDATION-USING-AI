@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import streamlit as st
+from data_processing import PRODUCTS_FILE
 
 matplotlib.use('Agg')
 
@@ -32,7 +33,7 @@ def _style(ax, fig):
 
 
 @st.cache_data(show_spinner=False)
-def compute_analysis_stats(csv_path='amazon_products.csv', cat_path='amazon_categories.csv'):
+def compute_analysis_stats(csv_path=PRODUCTS_FILE, cat_path='amazon_categories.csv'):
     """Runs all analysis on the raw CSVs and returns a stats dict. Cached permanently."""
     df = pd.read_csv(csv_path)
     df_cat = pd.read_csv(cat_path)
