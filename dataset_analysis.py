@@ -282,14 +282,25 @@ def show_dataset_analysis(inr_rate=84.0):
     # ── Sparse category callout ───────────────────────────────────────────────
     st.markdown('<div class="section-header">Sparse Categories (Under 100 Products)</div>', unsafe_allow_html=True)
     sparse = stats['sparse_cats']
-    cols = st.columns(len(sparse))
-    for i, (cat, cnt) in enumerate(sparse.items()):
-        with cols[i]:
-            st.markdown(f"""
-            <div style="background:#1e2235;border:1px solid #2a2f45;border-radius:10px;padding:0.8rem;text-align:center;">
+    
+    if len(sparse) > 0:
+        html_blocks = []
+        for cat, cnt in sparse.items():
+            html_blocks.append(f"""
+            <div style="background:#1e2235;border:1px solid #2a2f45;border-radius:10px;padding:0.8rem;text-align:center;flex: 1 1 140px;min-width:140px;max-width:200px;">
                 <div style="font-size:1.3rem;font-weight:700;color:#FF6B35;">{cnt}</div>
                 <div style="font-size:0.75rem;color:#9CA3AF;margin-top:0.3rem;line-height:1.4;">{cat}</div>
-            </div>""", unsafe_allow_html=True)
+            </div>""")
+        
+        flex_html = f"""
+        <div style="display:flex;flex-wrap:wrap;gap:12px;max-height:400px;overflow-y:auto;padding-right:8px;padding-bottom:10px;">
+            {''.join(html_blocks)}
+        </div>
+        <div style="font-size:0.8rem;color:#6B7280;margin-top:0.5rem;text-align:right;">Showing {len(sparse)} categories</div>
+        """
+        st.markdown(flex_html, unsafe_allow_html=True)
+    else:
+        st.markdown("<div style='color:#9CA3AF;font-size:0.9rem;padding:1rem;'>No sparse categories found in this dataset.</div>", unsafe_allow_html=True)
 
     # ── Key observations ──────────────────────────────────────────────────────
     st.markdown('<div class="section-header">Key Observations</div>', unsafe_allow_html=True)
